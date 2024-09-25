@@ -4,17 +4,13 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 import os
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Configure the Gemini API with the API key from .env
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Initialize Flask app and enable CORS
 app = Flask(__name__)
 CORS(app)
 
-# Define the model and its configuration
 prompt_model = genai.GenerativeModel(
     model_name="gemini-1.5-flash",
     generation_config={
@@ -34,12 +30,10 @@ prompt_model = genai.GenerativeModel(
     system_instruction="Your name is Angel. Your role is to find the best and most relevant answer with step-by-step instructions to the user's question."
 )
 
-# Test route to ensure API is working
 @app.route('/')
 def index():
     return 'API is working'
 
-# Chat route that processes user input and generates a response using the model
 @app.route('/chat', methods=['POST'])
 def chat():
     try:
@@ -67,7 +61,6 @@ def chat():
         # Catch any other unexpected errors
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
-# Run the Flask application
 if __name__ == '__main__':
     app.run(debug=True)
 

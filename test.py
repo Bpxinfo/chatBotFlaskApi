@@ -10,3 +10,5 @@ data = {
 response = requests.post(url, headers=headers, data=json.dumps(data))
 
 print(response.json())
+
+#testing to see if api is running correctly
