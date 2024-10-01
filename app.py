@@ -1,9 +1,11 @@
+<<<<<<< HEAD
 from flask import Flask,session, request, Response,jsonify
+=======
+from flask import Flask, request, jsonify
+>>>>>>> e8d180ccda30c82ade97313a030a58dcbdabce9b
 from flask_cors import CORS
-import time
 from dotenv import load_dotenv
 import google.generativeai as genai
-import json
 import os
 import PyPDF2
 import validators
@@ -26,6 +28,7 @@ app = Flask(__name__)
 app.secret_key = 'your_unique_secret_key123'  # Replace with a secure random string
 CORS(app)
 
+<<<<<<< HEAD
 UPLOAD_FOLDER = 'uploaded_files'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 reader = easyocr.Reader(['en'])
@@ -69,17 +72,30 @@ safety_settings = [
     },
 ]
 
+=======
+>>>>>>> e8d180ccda30c82ade97313a030a58dcbdabce9b
 prompt_model = genai.GenerativeModel(
-  model_name="gemini-1.5-flash",
-  generation_config=generation_config,
-  safety_settings = safety_settings,
-  # See https://ai.google.dev/gemini-api/docs/safety-settings
-  system_instruction="Your name is Angel. Your role is to find the best and most relevant answer with step by step to the user's question.",
+    model_name="gemini-1.5-flash",
+    generation_config={
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 64,
+        "max_output_tokens": 8192,
+        "response_mime_type": "text/plain",
+    },
+    safety_settings=[
+        {"category": "HARM_CATEGORY_DANGEROUS", "threshold": "BLOCK_NONE"},
+        {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+        {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+        {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+        {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+    ],
+    system_instruction="Your name is Angel. Your role is to find the best and most relevant answer with step-by-step instructions to the user's question."
 )
-
 
 @app.route('/')
 def index():
+<<<<<<< HEAD
     return 'working'
 ###############################################################
 
@@ -92,18 +108,31 @@ def chat():
     metadataFile = file_name + '.pkl'
 
     if not file_name:
+=======
+    return 'API is working'
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        # Get the user's message from the request
+        user_message = request.json.get('message')
+>>>>>>> e8d180ccda30c82ade97313a030a58dcbdabce9b
         if not user_message:
             return jsonify({'error': 'Message is required.'}), 400
 
-        # Create the prompt for the model
-        prompt = "Please find the best answer to my question.\nQUESTION - " + user_message
+        # Create a prompt to send to the model
+        prompt = f"Please find the best answer to my question.\nQUESTION - {user_message}"
         
+<<<<<<< HEAD
         # Generate response from the model
+=======
+        # Generate a response from the model
+>>>>>>> e8d180ccda30c82ade97313a030a58dcbdabce9b
         response = prompt_model.generate_content(prompt)
-        
         if not response or not response.text:
             return jsonify({'error': 'Failed to generate a response.'}), 500
 
+<<<<<<< HEAD
         return jsonify({'response': response.text})
     else:
         if not user_message:
@@ -196,6 +225,15 @@ def extract_text_from_pdf(file):
             return text
         else:
             return 'ERROR'     
+=======
+        # Return the response in JSON format
+        return jsonify({'response': response.text})
+
+    except KeyError as e:
+        return jsonify({'error': f'Missing key in request: {str(e)}'}), 400
+    except ValueError as e:
+        return jsonify({'error': f'Value error: {str(e)}'}), 400
+>>>>>>> e8d180ccda30c82ade97313a030a58dcbdabce9b
     except Exception as e:
         print(f"An error occurred: {e}")
 ##############################################
