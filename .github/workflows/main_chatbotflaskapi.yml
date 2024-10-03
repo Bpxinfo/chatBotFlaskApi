@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'chatBotFlaskApi'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CB5F042974AD4B4787DA26C935687F11 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_489647BABA9641F082E40303E4E1FD35 }}
