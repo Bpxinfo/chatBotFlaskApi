@@ -26,8 +26,8 @@ app = Flask(__name__)
 app.secret_key = 'your_unique_secret_key123'  # Replace with a secure random string
 CORS(app)
 
-UPLOAD_FOLDER = 'uploaded_files'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# UPLOAD_FOLDER = 'uploaded_files'
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 reader = easyocr.Reader(['en'])
 
 model = 'models/embedding-001'
